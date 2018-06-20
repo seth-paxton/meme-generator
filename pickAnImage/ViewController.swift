@@ -14,12 +14,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var topTextBox: UITextField!
     @IBOutlet weak var bottomTextBox: UITextField!
-    @IBOutlet weak var topButtonBar: UIToolbar!
+    @IBOutlet weak var topNavBar: UINavigationBar!
     @IBOutlet weak var bottomButtonBar: UIToolbar!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     override func viewDidLoad() {
-        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         super.viewDidLoad()
+        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
+        shareButton.isEnabled = false
         
         
         // Text modifiers
@@ -46,6 +49,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
         subscribeToKeyboardNotificationsHide()
+        
+        // Enable the share button if an image is selected. 
+        if imageView.image != nil {
+            shareButton.isEnabled = true
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -73,10 +81,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     internal func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any])
     {
-        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage //2
-        //imageView.contentMode = .scaleAspectFit //3
-        imageView.image = chosenImage //4
-        dismiss(animated:true, completion: nil) //5
+        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        //imageView.contentMode = .scaleAspectFit
+        imageView.image = chosenImage
+        dismiss(animated:true, completion: nil)
         
     }
     
@@ -130,15 +138,35 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
     
-    func save() {
+    func save() -> UIImage {
         // Create the meme
         let memedImage = generateMemedImage()
         let meme = Meme(topText: topTextBox.text!, bottomText: bottomTextBox.text!, originalImage: imageView.image!, memedImage: memedImage)
+
+        return meme.memedImage
+    }
+    
+    @IBAction func shareImage(_ sender: Any) {
+            
+        // image to share
+        let image = save()
+
+        // set up activity view controller
+        let imageToShare = [ image ]
+        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+
+        // present the view controller
+        self.present(activityViewController, animated: true, completion: nil)
+        
+        }
+    @IBAction func resetView(_ sender: Any) {
+        self.viewDidLoad()
     }
     
     func generateMemedImage() -> UIImage {
         
-        self.topButtonBar.isHidden = true
+        self.topNavBar.isHidden = true
         
         // Render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -146,7 +174,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
-        self.topButtonBar.isHidden = false
+        self.topNavBar.isHidden = false
         
         return memedImage
     }

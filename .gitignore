@@ -1,0 +1,14 @@
+*.xcuserstate
+*.xcuserdata
+*.xcshareddata
+*.xcuserdatad
+*.xcscmblueprint
+*xcbaselines*
+.DS_Store
+
+# Idea/AppCode settings
+.idea/
+build
+
+#carthage
+Carthage
