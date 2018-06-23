@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BM6-3F-m0G">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BM6-3F-m0G">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -21,12 +21,12 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OJZ-2n-Jtb">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem title="Photos" id="38B-yI-ZjO">
+                                    <barButtonItem title="Album" id="38B-yI-ZjO">
                                         <connections>
                                             <action selector="pickAnImage:" destination="BM6-3F-m0G" id="SZx-qi-hjc"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Camera" id="BrI-zr-Sre">
+                                    <barButtonItem systemItem="camera" id="BrI-zr-Sre">
                                         <connections>
                                             <action selector="pickAnImageFromCamera:" destination="BM6-3F-m0G" id="Qi3-0i-AUC"/>
                                         </connections>
@@ -58,7 +58,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <items>
                                     <navigationItem title="Meme" id="4Vn-zQ-EJi">
-                                        <barButtonItem key="leftBarButtonItem" title="Share" id="jqR-Nq-nN5">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="jqR-Nq-nN5">
                                             <connections>
                                                 <action selector="shareImage:" destination="BM6-3F-m0G" id="5SP-uN-cpE"/>
                                             </connections>

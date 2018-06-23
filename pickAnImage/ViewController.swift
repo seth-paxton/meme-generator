@@ -21,8 +21,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.initialView()
+    }
+
+    
+    // MARK: initialView
+    // Setup the initial view and clear an existing editing
+    func initialView() {
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         shareButton.isEnabled = false
+        topTextBox.delegate = self
+        bottomTextBox.delegate = self
         
         
         // Text modifiers
@@ -33,15 +42,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             NSAttributedStringKey.strokeWidth.rawValue: -2.5]
         
         // Top
+        topTextBox.text = ""
         topTextBox.defaultTextAttributes = memeTextAttributes
         topTextBox.textAlignment = .center
         topTextBox.placeholder = "Top Field"
         
         // Bottom
+        bottomTextBox.text = ""
         bottomTextBox.defaultTextAttributes = memeTextAttributes
         bottomTextBox.textAlignment = .center
         bottomTextBox.placeholder = "Bottom Field"
-
+        
+        // Clear background
+        imageView.image = nil
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +69,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if imageView.image != nil {
             shareButton.isEnabled = true
         }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -63,6 +79,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         unsubscribeFromKeyboardNotificationsHide()
     }
 
+    // MARK: pickAnImage
+    // Button used to pick an image from the existing album
     @IBAction func pickAnImage(_ sender: Any) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
@@ -70,6 +88,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         present(imagePicker, animated: true, completion: nil)
     }
     
+    // Take an image from the camera
     @IBAction func pickAnImageFromCamera(_ sender: Any) {
         
         let imagePicker = UIImagePickerController()
@@ -78,11 +97,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         present(imagePicker, animated: true, completion: nil)
     }
     
+    // Set the background based on image picked
     internal func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any])
     {
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        //imageView.contentMode = .scaleAspectFit
         imageView.image = chosenImage
         dismiss(animated:true, completion: nil)
         
@@ -92,21 +111,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         dismiss(animated: true, completion: nil)
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {    //delegate method
-        
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {   //delegate method
         textField.resignFirstResponder()
-        
         return true
     }
     
-    @objc func keyboardWillShow(_ notification:Notification) {
-        
-        view.frame.origin.y -= getKeyboardHeight(notification)
+    // Move the screen down when the keyboard comes up
+    // so you can see the top textbox and keyboard at the same time
+    // while editing
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == topTextBox {
+            self.view.frame.origin.y = +400
+        }
     }
     
+    // Move keyboard when editing text
+    @objc func keyboardWillShow(_ notification:Notification) {
+        view.frame.origin.y -= getKeyboardHeight(notification)
+        
+    }
+    
+    // Get the height of the keyboard for editing adjustments
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
         
         let userInfo = notification.userInfo
@@ -138,6 +163,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
     
+    // Save the current image as a meme and return custom type
     func save() -> UIImage {
         // Create the meme
         let memedImage = generateMemedImage()
@@ -146,6 +172,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return meme.memedImage
     }
     
+    // Activity view to share image
     @IBAction func shareImage(_ sender: Any) {
             
         // image to share
@@ -160,10 +187,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.present(activityViewController, animated: true, completion: nil)
         
         }
+    
+    // If the cancel button is selected, reset the view to default
     @IBAction func resetView(_ sender: Any) {
-        self.viewDidLoad()
+        self.initialView()
+        print("reset view" )
     }
     
+    // Helper to generate the actual meme image
     func generateMemedImage() -> UIImage {
         
         self.topNavBar.isHidden = true
