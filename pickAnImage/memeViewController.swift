@@ -19,6 +19,7 @@ class memeViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.initialView()
@@ -168,7 +169,7 @@ class memeViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     @IBAction func shareImage(_ sender: Any) {
             
         // image to share
-        let image = save()
+        let image = generateMemedImage()
 
         // set up activity view controller
         let imageToShare = [ image ]
@@ -179,9 +180,9 @@ class memeViewController: UIViewController, UIImagePickerControllerDelegate, UIN
             
             guard completed else { print("User cancelled."); return }
             
-            print("Completed With Activity Type: \(String(describing: activityType))")
-            
             _ = self.save()
+            
+            print("Completed With Activity Type: \(String(describing: activityType))")
         }
         
         // present the view controller

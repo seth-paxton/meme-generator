@@ -39,18 +39,8 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FPI-3c-s2E">
                                 <rect key="frame" x="0.0" y="64" width="375" height="559"/>
                             </imageView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HeM-Id-d2V">
-                                <rect key="frame" x="62.5" y="127" width="250" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="29Q-Bo-hm5"/>
-                                    <constraint firstAttribute="width" constant="250" id="4eX-RR-mo3"/>
-                                </constraints>
-                                <color key="textColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
-                            </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rPD-Yw-ahF">
-                                <rect key="frame" x="62.5" y="477" width="250" height="50"/>
+                                <rect key="frame" x="62" y="544" width="250" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="YED-u5-eG4"/>
                                     <constraint firstAttribute="width" constant="250" id="mLO-G3-Vny"/>
@@ -76,12 +66,22 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HeM-Id-d2V">
+                                <rect key="frame" x="62" y="92" width="250" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="29Q-Bo-hm5"/>
+                                    <constraint firstAttribute="width" constant="250" id="4eX-RR-mo3"/>
+                                </constraints>
+                                <color key="textColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="aCj-bd-OMI" firstAttribute="trailing" secondItem="gvs-FD-paq" secondAttribute="trailing" id="4Fc-SA-82W"/>
                             <constraint firstItem="FPI-3c-s2E" firstAttribute="leading" secondItem="aCj-bd-OMI" secondAttribute="leading" id="6i2-Es-yan"/>
-                            <constraint firstItem="HeM-Id-d2V" firstAttribute="top" secondItem="aCj-bd-OMI" secondAttribute="bottom" constant="63" id="7re-w7-cXC"/>
+                            <constraint firstItem="HeM-Id-d2V" firstAttribute="top" secondItem="aCj-bd-OMI" secondAttribute="bottom" constant="28" id="7re-w7-cXC"/>
                             <constraint firstItem="HeM-Id-d2V" firstAttribute="centerX" secondItem="FPI-3c-s2E" secondAttribute="centerX" id="Azk-Oc-kti"/>
                             <constraint firstItem="FPI-3c-s2E" firstAttribute="centerX" secondItem="rPD-Yw-ahF" secondAttribute="centerX" id="I5W-jB-bQt"/>
                             <constraint firstItem="FPI-3c-s2E" firstAttribute="centerX" secondItem="HeM-Id-d2V" secondAttribute="centerX" id="IQ2-dg-sSz"/>
@@ -90,7 +90,7 @@
                             <constraint firstItem="OJZ-2n-Jtb" firstAttribute="bottom" secondItem="gvs-FD-paq" secondAttribute="bottom" id="Prj-FC-aHV"/>
                             <constraint firstItem="OJZ-2n-Jtb" firstAttribute="trailing" secondItem="gvs-FD-paq" secondAttribute="trailing" id="bWO-fw-1Ft"/>
                             <constraint firstItem="OJZ-2n-Jtb" firstAttribute="top" secondItem="FPI-3c-s2E" secondAttribute="bottom" id="cSb-yj-lTH"/>
-                            <constraint firstItem="OJZ-2n-Jtb" firstAttribute="top" secondItem="rPD-Yw-ahF" secondAttribute="bottom" constant="96" id="jXp-nS-68S"/>
+                            <constraint firstItem="OJZ-2n-Jtb" firstAttribute="top" secondItem="rPD-Yw-ahF" secondAttribute="bottom" constant="29" id="jXp-nS-68S"/>
                             <constraint firstItem="OJZ-2n-Jtb" firstAttribute="leading" secondItem="gvs-FD-paq" secondAttribute="leading" id="mRZ-1x-k9V"/>
                             <constraint firstItem="aCj-bd-OMI" firstAttribute="leading" secondItem="gvs-FD-paq" secondAttribute="leading" id="qD4-4A-s0j"/>
                             <constraint firstItem="HeM-Id-d2V" firstAttribute="centerX" secondItem="aCj-bd-OMI" secondAttribute="centerX" id="tYS-Ai-Fge"/>
