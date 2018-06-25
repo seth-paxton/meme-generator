@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class memeViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
@@ -30,10 +30,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func initialView() {
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         shareButton.isEnabled = false
-        topTextBox.delegate = self
-        bottomTextBox.delegate = self
+
+        // Top Text Field
+        setTextFields(textField: topTextBox, fieldName: "Top Field")
         
+        // Bottom Text Field
+        setTextFields(textField: bottomTextBox, fieldName: "Bottom Field")
         
+        // Clear background
+        imageView.image = nil
+    }
+    
+    func setTextFields(textField: UITextField, fieldName: String) {
         // Text modifiers
         let memeTextAttributes:[String: Any] = [
             NSAttributedStringKey.strokeColor.rawValue: UIColor.black,
@@ -41,21 +49,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             NSAttributedStringKey.font.rawValue: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
             NSAttributedStringKey.strokeWidth.rawValue: -2.5]
         
-        // Top
-        topTextBox.text = ""
-        topTextBox.defaultTextAttributes = memeTextAttributes
-        topTextBox.textAlignment = .center
-        topTextBox.placeholder = "Top Field"
-        
-        // Bottom
-        bottomTextBox.text = ""
-        bottomTextBox.defaultTextAttributes = memeTextAttributes
-        bottomTextBox.textAlignment = .center
-        bottomTextBox.placeholder = "Bottom Field"
-        
-        // Clear background
-        imageView.image = nil
-        
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.delegate = self
+        textField.text = ""
+        textField.textAlignment = .center
+        textField.placeholder = fieldName
         
     }
     
@@ -78,23 +76,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         unsubscribeFromKeyboardNotifications()
         unsubscribeFromKeyboardNotificationsHide()
     }
-
+    
     // MARK: pickAnImage
-    // Button used to pick an image from the existing album
-    @IBAction func pickAnImage(_ sender: Any) {
+    func pickAnImage(source: UIImagePickerControllerSourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
+        imagePicker.sourceType = source
         present(imagePicker, animated: true, completion: nil)
     }
     
+    // Button used to pick an image from the existing album
+    @IBAction func pickAnImageFromAlbum(_ sender: Any) {
+        pickAnImage(source: .photoLibrary)
+    }
+
     // Take an image from the camera
     @IBAction func pickAnImageFromCamera(_ sender: Any) {
-        
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        present(imagePicker, animated: true, completion: nil)
+        pickAnImage(source: .camera)
     }
     
     // Set the background based on image picked
@@ -116,18 +114,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return true
     }
     
-    // Move the screen down when the keyboard comes up
-    // so you can see the top textbox and keyboard at the same time
-    // while editing
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == topTextBox {
-            self.view.frame.origin.y = +400
-        }
-    }
-    
     // Move keyboard when editing text
     @objc func keyboardWillShow(_ notification:Notification) {
-        view.frame.origin.y -= getKeyboardHeight(notification)
+        // Do not move the keyboard if editing the top text field
+        if bottomTextBox.isEditing {
+            view.frame.origin.y -= getKeyboardHeight(notification)
+        }
         
     }
     
@@ -182,11 +174,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let imageToShare = [ image ]
         let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
-
+        activityViewController.completionWithItemsHandler = {
+            (activityType, completed, items, error) in
+            
+            guard completed else { print("User cancelled."); return }
+            
+            print("Completed With Activity Type: \(String(describing: activityType))")
+            
+            _ = self.save()
+        }
+        
         // present the view controller
         self.present(activityViewController, animated: true, completion: nil)
         
-        }
+    }
     
     // If the cancel button is selected, reset the view to default
     @IBAction func resetView(_ sender: Any) {
@@ -209,8 +210,5 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         return memedImage
     }
-    
-    
-    
 }
 
